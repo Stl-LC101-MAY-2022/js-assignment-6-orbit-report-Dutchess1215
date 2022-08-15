@@ -1,20 +1,38 @@
 <table>
-    <tr class="header-row">
-        <th (click)="sort('name')" class="sortable">Name</th>
-        <th (click)="sort('type')" class="sortable">Type</th>
-        <th>Operational</th>
-        <th>Orbit Type</th>
-        <th>Launch Date</th>
-    </tr>
-    <tr class="data-row">
-        <td>GPS 938</td>
-        <td>Positioning</td>
-        <td>true</td>
-        <td>HIGH</td>
-        <td>2001-11-01</td>
-    </tr>
+  <tr class="header-row">
+    <th (click)="sort('name')" class="sortable">Name</th>
+    <th (click)="sort('type')" class="sortable">Type</th>
+    <th>Operational</th>
+    <th>Orbit Type</th>
+    <th>Launch Date</th>
+  </tr>
+  <tr class="data-row" *ngFor="let satellite of satellites; let indexOfElement = index">
+    <div *ngIf = 'indexOfElement %2 ===1;then normal else other'></div>
+    <ng-template #normal> 
+    <td>{{satellite.name}}</td>
+    <div *ngIf="satellite.isSpaceDebris(); then debris else noDebris"></div>
+    <ng-template #debris
+      ><td class="warning">{{satellite.type}}</td></ng-template
+    >
+    <ng-template #noDebris><td>{{satellite.type}}</td></ng-template>
+    <td>{{satellite.operational}}</td>
+    <td>{{satellite.orbitType}}</td>
+    <td>{{satellite.launchDate}}</td>
+    </ng-template>
+    <ng-template #other> 
+        <td class = 'other'>{{satellite.name}}</td>
+        <div *ngIf="satellite.isSpaceDebris(); then debris else noDebris"></div>
+        <ng-template #debris
+          ><td class="warning">{{satellite.type}}</td></ng-template
+        >
+        <ng-template  #noDebris><td class = 'other'>{{satellite.type}}</td></ng-template>
+        <td class = 'other'>{{satellite.operational}}</td>
+        <td class = 'other'>{{satellite.orbitType}}</td>
+        <td class = 'other'>{{satellite.launchDate}}</td>
+        </ng-template>
+  </tr>
+
 </table>
 
 <!-- TODO 2b: use *ngFor to display satellite data in the table -->
 <!-- TODO 3b: add style directive to conditionally highlight satellite type -->
-
